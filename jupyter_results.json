@@ -1,0 +1,25 @@
+{
+    "RNC": [
+        {
+            "Leakage p.u.l. fora da janela": 8.47561515309751e-05
+        },
+        {
+            "Contribuicao de Indutancia de Dispersao fora da janela": 4.407319879610706e-06
+        },
+        {
+            "Leakage p.u.l. fora da janela": 9.355834352017444e-05
+        },
+        {
+            "Contribuicao de Indutancia de Dispersao fora da janela": 5.2579789058338035e-06
+        },
+        {
+            "Leakage p.u.a. dos cantos": 6.877617842605544e-07
+        },
+        {
+            "Contribuicao de Indutancia de Dispersao dos cantos": 4.321334737705532e-06
+        },
+        {
+            "Indutancia de Dispersao total": 1.3986633523150042e-05
+        }
+    ]
+}
