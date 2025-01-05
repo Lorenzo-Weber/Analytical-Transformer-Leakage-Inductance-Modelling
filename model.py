@@ -48,16 +48,12 @@ a_2_plus = a_1 + 0.007 + a_2
 
 def calc_termAm0Jm0(m):
 
-    J_1_m0 = ((2 * J_1) / (m * h_w * np.pi)) * (
-    np.sin((m * np.pi * a_1_plus) / w_w) - np.sin((m * np.pi * a_1_minus) / w_w)
-    ) * (h_1_plus - h_1_minus)
-    A_1_m0 = (mu_0 * J_1_m0) / (((m * np.pi) / w_w) ** 2)
+    J_1_m0 = ((2 * J_1) / (m * h_w * np.pi)) * (np.sin((m * np.pi * a_1_plus) / w_w) - np.sin((m * np.pi * a_1_minus) / w_w)) * (h_1_plus - h_1_minus)
+    A_1_m0 = (mu_0 * J_1_m0) / (((m * np.pi) / (w_w))**2)
 
-    J_2_m0 = ((2 * J_2) / (m * h_w * np.pi)) * (
-        np.sin((m * np.pi * a_2_plus) / w_w) - np.sin((m * np.pi * a_2_minus) / w_w)
-    ) * (h_2_plus - h_2_minus)
-    A_2_m0 = (mu_0 * J_2_m0) / (((m * np.pi) / w_w) ** 2)
-
+    J_2_m0 = ((2 * J_2) / (m * h_w * np.pi)) * (np.sin((m * np.pi * a_2_plus) / w_w) - np.sin((m * np.pi * a_2_minus) / w_w)) * (h_2_plus - h_2_minus)
+    A_2_m0 = (mu_0 * J_2_m0) / (((m * np.pi) / (w_w))**2)
+    
     A_m0 = A_1_m0 + A_2_m0
     J_m0 = J_1_m0 + J_2_m0
 
@@ -67,31 +63,32 @@ def calc_termA0nJ0n(n):
 
     J_1_0n = ((2 * J_1) / (n * w_w * np.pi)) * (np.sin((n * np.pi * h_1_plus) / h_w) - np.sin((n * np.pi * h_1_minus) / h_w)) * (a_1_plus - a_1_minus)
     A_1_0n = (mu_0 * J_1_0n) / (((n * np.pi) / (h_w))**2)
-    
+     
     J_2_0n = ((2 * J_2) / (n * w_w * np.pi)) * (np.sin((n * np.pi * h_2_plus) / h_w) - np.sin((n * np.pi * h_2_minus) / h_w)) * (a_2_plus - a_2_minus)
     A_2_0n = (mu_0 * J_2_0n) / (((n * np.pi) / (h_w))**2)
     
     A_0n = A_1_0n + A_2_0n
     J_0n = J_1_0n + J_2_0n
 
+
     return A_0n * J_0n 
 
-def calc_termAmnJmn(m, n):
-    
-    J_1_mn = ((4 * J_1) / (m * n * (np.pi)**2)) * (
-        np.sin((m * np.pi * a_1_plus) / w_w) - np.sin((m * np.pi * a_1_minus) / w_w)
-    ) * (np.sin((n * np.pi * h_1_plus) / h_w) - np.sin((n * np.pi * h_1_minus) / h_w))
+def calc_termAmnJmn(t):
+
+    m, n = t
+
+    J_1_mn = ((4 * J_1) / (m * n * (np.pi)**2)) * (np.sin((m * np.pi * a_1_plus) / w_w) - np.sin((m * np.pi * a_1_minus) / w_w)) * (np.sin((n * np.pi * h_1_plus) / h_w) - np.sin((n * np.pi * h_1_minus) / h_w))
     A_1_mn = (mu_0 * J_1_mn) / (((m * np.pi) / (w_w))**2 + ((n * np.pi) / (h_w))**2)
     
-    J_2_mn = ((4 * J_2) / (m * n * (np.pi)**2)) * (
-        np.sin((m * np.pi * a_2_plus) / w_w) - np.sin((m * np.pi * a_2_minus) / w_w)
-    ) * (np.sin((n * np.pi * h_2_plus) / h_w) - np.sin((n * np.pi * h_2_minus) / h_w))
+    J_2_mn = ((4 * J_2) / (m * n * (np.pi)**2)) * (np.sin((m * np.pi * a_2_plus) / w_w) - np.sin((m * np.pi * a_2_minus) / w_w)) * (np.sin((n * np.pi * h_2_plus) / h_w) - np.sin((n * np.pi * h_2_minus) / h_w))
     A_2_mn = (mu_0 * J_2_mn) / (((m * np.pi) / (w_w))**2 + ((n * np.pi) / (h_w))**2)        
 
     A_mn = A_1_mn + A_2_mn
     J_mn = J_1_mn + J_2_mn
 
+
     return A_mn * J_mn
+
 
 def nonCircular():
     
@@ -115,8 +112,9 @@ def nonCircular():
     sum_0n = sum(results)
 
     # Somatório A_mn*J_mn
+
     with ProcessPoolExecutor() as executor:
-        results = list(executor.map(calc_termAmnJmn, range(1, M), range(1, N + 1)))
+            results = list(executor.map(calc_termAmnJmn, ((m, n) for m in range(1, M) for n in range(1, N + 1))))
     sum_mn = sum(results)
 
     # Corrente de referência 
